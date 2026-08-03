@@ -1,0 +1,19 @@
+# MATLAB / Simulink
+*.asv
+*.m~
+*.slxc
+*.mdl
+*.mat
+*.p
+*.mex*
+*.autosave
+*.log
+*.out
+
+# Generated artifacts
+slprj/
+**/slprj/
+
+# OS files
+.DS_Store
+Thumbs.db

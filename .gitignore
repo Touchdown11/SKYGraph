@@ -14,6 +14,19 @@
 slprj/
 **/slprj/
 
+# Regenerable MATLAB project metadata
+resources/
+resources/project/
+
+# Backup / intermediate files
+*.slx.original
+*.bak
+*~.m
+
+# Runtime outputs (trained agents, logs)
+data/*.mat
+data/*.png
+
 # OS files
 .DS_Store
 Thumbs.db

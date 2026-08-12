@@ -11,8 +11,10 @@ run the **final visualization** and **evaluation** from within MATLAB.
 
 > The project was originally delivered as 15 "stage" folders with inconsistent
 > naming. It has been reorganized into an industry-standard, module-based
-> layout. **Function and model names are unchanged**, so all Simulink models
-> and cross-file calls keep working.
+> layout, and every file **not required to run the final Stage-14
+> visualization and Stage-15 evaluation** has been removed. **Function and
+> model names are unchanged**, so all remaining Simulink models and cross-file
+> calls keep working.
 
 ---
 
@@ -58,19 +60,40 @@ SKYGraph/
 
 ## 2. Cleanup performed (unwanted folders / code)
 
-The following regenerable or redundant items were identified and removed:
+Two cleanup passes were made.
+
+**Pass 1 — regenerable clutter removed:**
 
 | Removed item                                    | Why                                                        |
 |-------------------------------------------------|------------------------------------------------------------|
 | `resources/project/**` (XML metadata)           | Auto-generated MATLAB project cache; regenerated on open   |
 | `drone_from_scratch.prj`                        | Empty placeholder project file (no content)                |
 | `quadrotor_stage13_ppo.slx.original`            | Backup copy of an existing model                           |
-| Top-level scratch `.m`/`.slx` clutter           | Moved into `src/core`, `scripts/`, `visualization/`, `models/` (kept as the Stage-1 baseline) |
 | Folder names with spaces (`Simulation Stage 8…`) | Non-standard; merged into the new module tree              |
 
-No functional source was deleted — all 94 `.m` files and 13 `.slx` models were
-preserved and reorganized. `.gitignore` now excludes `resources/`,
-`*.slx.original`, and runtime outputs (`data/*.mat`, `data/*.png`).
+**Pass 2 — stages not needed to run Stage 14 & 15 removed:**
+
+The repository contained the full development history of 15 incremental
+stages. Only the modules that the **final Stage-14 visualization** and
+**Stage-15 evaluation** actually depend on were retained (stages 3 dynamics /
+estimation, 4 waypoint guidance, 8 scenarios/ToF, 9 tracking, 10 graph, 11 CBF,
+12 GAT, 13 PPO, plus the training scripts that produce the required agent and
+weights). Everything else was removed:
+
+| Removed                                                          | Why                                             |
+|------------------------------------------------------------------|-------------------------------------------------|
+| Stage 1 baseline + Stage 2 (models, `flightController`, `quadDynamics`, sim scripts) | Superseded by Stage 3 dynamics/control |
+| Stage 4 / Stage 5 legacy visualization (`animateDroneStage4`, waypoint-viz, sim scripts) | Superseded by Stage 14 dashboard |
+| Stage 6 & Stage 7 ToF models (`pairedScene`, `pairedToFArray`, `realisticPairedToF`) | Superseded by Stage 8 scenarios/ToF |
+| Intermediate `configureStage*` / `plotStage*` / `testStage*` for stages 8–13 | Not invoked by the final run flows |
+| Intermediate `.slx` models (stage 2–12)                        | Only the Stage 13 & 15 models are simulated |
+| Legacy entry scripts (`simulateQuadrotor*`, `runStage4/5*`)      | Replaced by `runStage14Visualization` / `runStage15Experiments` |
+
+The retained set is a complete, runnable final pipeline — every remaining
+source function is a transitive dependency of the two final models or of the
+training scripts that generate their runtime artifacts
+(`ppoAgentStage13.mat`, `gatThreatWeightsStage12.mat`). `.gitignore` excludes
+`resources/`, `*.slx.original`, and runtime outputs (`data/*.mat`, `data/*.png`).
 
 ---
 

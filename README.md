@@ -8,21 +8,25 @@ policy, culminating in a full 3-D mission dashboard and an evaluation harness.
 
 ## Repository layout (module-based, industry standard)
 
+Only the files required to run the **final Stage-14 visualization** and
+**Stage-15 evaluation** are retained; all superseded development stages were
+removed.
+
 ```
-config/         Model & path configuration per subsystem
+config/         configureStage13PPO / configureStage15Evaluation
 src/            MATLAB source, grouped by responsibility
-  core/         Quadrotor dynamics, controllers, waypoints, environment
-  estimation/   Sensor model, state estimator, position error
-  perception/   ToF arrays, realistic scenes, ToF geometry
-  tracking/     Multi-entity tracker
-  mapping/      Spatial graph builder
-  safety/       CBF safety shield
-  ai/           GAT threat inference + PPO policy + safety selector
-models/         All Simulink .slx models
-visualization/  plot* / animate* scripts (incl. Stage-14 dashboard)
-scripts/        run* / simulate* / train* / evaluate* entry points
-tests/          test* / validate* / diagnose* scripts
-evaluation/     Stage-15 metric extraction
+  core/         Dynamics, control, waypoint guidance (stages 3, 4, 11)
+  estimation/   Sensor model, state estimator (stage 3)
+  perception/   ToF geometry + realistic scenarios (stage 8)
+  tracking/     Multi-entity tracker (stage 9)
+  mapping/      Spatial graph builder (stage 10)
+  safety/       CBF safety shield (stage 11)
+  ai/           GAT threat inference + PPO policy + safety selector (12/13/15)
+models/         quadrotor_stage13_ppo.slx, quadrotor_stage15_evaluation.slx
+visualization/  Stage-14 dashboard + Stage-15 results plotter
+scripts/        run* entry points + GAT/PPO training scripts
+tests/          validateSkyGraphStage14.m
+evaluation/     extractStage15Metrics.m
 data/           Generated results (.csv / .mat)
 docs/           Guides and rendered result figures
 ```

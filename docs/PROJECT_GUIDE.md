@@ -138,7 +138,7 @@ addpath(genpath(pwd));
 artifact that already exists. Requires MATLAB with the **Reinforcement Learning
 Toolbox** and **Deep Learning Toolbox**.
 
-## 5. Running the final visualization
+## 5. Running the final visualization (Stage 14 dashboard)
 
 The **final visualization** is the **Stage-14 SkyGraph Mission Dashboard** — a
 multi-panel, 3-D animated view of the simulated mission (true vs. estimated
@@ -147,23 +147,36 @@ intervention, and a live status readout).
 
 Prerequisites in MATLAB:
 - Trained artifacts generated via `setupSkyGraph` (see section 4).
-- All folders on the path. Running the entry script from its own folder is
-  enough, because it adds the whole project via `genpath`.
+- All folders on the path. Running any entry script from its own folder is
+  enough, because each one adds the whole project via `genpath`.
 
-Run the full dashboard (simulates Stage 13, validates logs, then animates):
+There are two animation variants and two corresponding entry points:
+
+**Option A — `runSkyGraphDashboard` (simplest, multi-panel dashboard).**
+Self-contained: it trains any missing artifacts, configures the pipeline,
+simulates Stage 13, validates the logs, and plays the multi-panel dashboard.
+
+```matlab
+cd <projectRoot>/scripts
+runSkyGraphDashboard()                     % end-to-end, no arguments needed
+```
+
+**Option B — `runStage14Visualization` (full-flow 3-D playback).**
+Simulates Stage 13 and plays the 3-D mission scene with a fixed camera.
 
 ```matlab
 cd <projectRoot>/scripts
 out = runStage14Visualization();
 ```
 
-Or, if `out` from a prior simulation already exists in the workspace:
+If you already have a valid simulation `out` in the workspace from either
+script, you can replay the dashboard without re-simulating:
 
 ```matlab
-runSkyGraphDashboard           % validates + plays the dashboard on existing `out`
+runSkyGraphDashboard(out)                  % plays the dashboard on existing out
 ```
 
-Controls during playback: `Space` = pause/resume, `Esc` = stop.
+Playback controls (both variants): `Space` = pause/resume, `Esc` = stop.
 
 ---
 

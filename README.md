@@ -37,20 +37,22 @@ docs/           Guides and rendered result figures
    ```matlab
    addpath(genpath(pwd));
    ```
-2. **Generate the trained artifacts once** (GAT weights + PPO agent; these are
-   runtime outputs, gitignored, so they are not in the repo):
-   ```matlab
-   [weightsFile, agentFile] = setupSkyGraph();
-   ```
-3. Run the **final visualization** (Stage-14 mission dashboard) — either the
-   simple self-contained entry point or the full-flow playback:
+2. Run the **final visualization** (Stage-14 mission dashboard) — either the
+   simple self-contained entry point or the full-flow playback. If the trained
+   GAT/PPO artifacts are missing, they are **trained automatically** on first
+   run:
    ```matlab
    cd scripts
-   runSkyGraphDashboard();          % easiest: trains artifacts, simulates, animates
+   runSkyGraphDashboard();          % easiest: auto-trains, simulates, animates
    % or
    out = runStage14Visualization(); % full-flow 3-D playback
    ```
-4. Run the **final evaluation** (Stage-15 40-run sweep):
+   (Optional) Generate the trained artifacts ahead of time to control the
+   training:
+   ```matlab
+   [weightsFile, agentFile] = setupSkyGraph();
+   ```
+3. Run the **final evaluation** (Stage-15 40-run sweep; also auto-trains):
    ```matlab
    cd scripts
    results = runStage15Experiments("full");

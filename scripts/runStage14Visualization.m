@@ -14,6 +14,11 @@ projectRoot=fileparts(scriptFolder);
 % the project root was never added to the MATLAB path manually.
 addpath(genpath(char(projectRoot)));
 
+% Auto-train any missing runtime artifacts (Stage 12 GAT weights and the
+% Stage 13 PPO agent). setupSkyGraph skips anything already present, so this
+% only trains when the *.mat files do not exist yet.
+setupSkyGraph();
+
 % configureStage13PPO resolves the project root from its own location under
 % <projectRoot>/config and (re)adds all modules/models/tests to the path.
 configureStage13PPO(projectRoot);

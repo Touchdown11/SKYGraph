@@ -3,12 +3,21 @@ function results=runStage15Experiments(suite)
 
 if nargin<1,suite="quick";end
 suite=lower(string(suite));
-configureStage15Evaluation;
+
+% This file lives in <projectRoot>/scripts, so its parent is the project root.
+scriptFolder=fileparts(mfilename('fullpath'));
+projectRoot=fileparts(scriptFolder);
+addpath(genpath(char(projectRoot)));
+
+% Auto-train any missing runtime artifacts (Stage 12 GAT weights and the
+% Stage 13 PPO agent) before configuring the evaluation harness.
+setupSkyGraph();
+
+configureStage15Evaluation(projectRoot);
 model="quadrotor_stage15_evaluation";
 
 % Results are written to the shared <projectRoot>/data folder.
-scriptFolder=fileparts(mfilename('fullpath'));
-dataFolder=fullfile(fileparts(scriptFolder),'data');
+dataFolder=fullfile(projectRoot,'data');
 
 if suite=="full"
     names=strings(40,1);policy=zeros(40,1);safety=zeros(40,1);

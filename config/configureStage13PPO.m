@@ -37,7 +37,11 @@ end
 agentFile=fullfile(stage13Folder,'ppoAgentStage13.mat');
 if ~isfile(agentFile)
     matches=dir(fullfile(char(projectRoot),'**','ppoAgentStage13.mat'));
-    if isempty(matches),error('ppoAgentStage13.mat was not found.');end
+    if isempty(matches)
+        error(['ppoAgentStage13.mat was not found. This trained agent is generated at ', ...
+            'runtime (it is gitignored as *.mat). Run setupSkyGraph once to train the ', ...
+            'Stage 12 GAT weights and the Stage 13 PPO agent before running this stage.']);
+    end
     agentFile=fullfile(matches(1).folder,matches(1).name);
 end
 loaded=load(agentFile,'agent');loaded.agent.UseExplorationPolicy=false;

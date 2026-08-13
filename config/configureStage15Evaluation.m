@@ -65,7 +65,10 @@ agentFile=which('ppoAgentStage13.mat');
 if isempty(agentFile)
     matches=dir(fullfile(char(projectRoot),'**','ppoAgentStage13.mat'));
     if isempty(matches)
-        error('ppoAgentStage13.mat was not found under %s.',projectRoot);
+        error(['ppoAgentStage13.mat was not found under %s. This trained agent is ', ...
+            'generated at runtime (gitignored as *.mat). Run setupSkyGraph once to ', ...
+            'train the Stage 12 GAT weights and the Stage 13 PPO agent before ', ...
+            'running Stage 15.'],projectRoot);
     end
     agentFile=fullfile(matches(1).folder,matches(1).name);
     addpath(matches(1).folder,'-begin');

@@ -118,7 +118,27 @@ core.dynamics/control (stage 3)
 
 ---
 
-## 4. Running the final visualization
+## 4. First-time setup (generate trained artifacts)
+
+The final pipeline needs two **trained artifacts** that are generated at
+runtime and are **not stored in the repository** (they are `.mat`, gitignored):
+
+1. `gatThreatWeightsStage12.mat` — GAT threat encoder weights (Stage 12)
+2. `ppoAgentStage13.mat` — PPO navigation policy (Stage 13)
+
+If they are missing you will get an error like
+`ppoAgentStage13.mat was not found`. Generate them once before the first run:
+
+```matlab
+addpath(genpath(pwd));
+[weightsFile, agentFile] = setupSkyGraph();
+```
+
+`setupSkyGraph` trains Stage 12 first (Stage 13 depends on it) and skips any
+artifact that already exists. Requires MATLAB with the **Reinforcement Learning
+Toolbox** and **Deep Learning Toolbox**.
+
+## 5. Running the final visualization
 
 The **final visualization** is the **Stage-14 SkyGraph Mission Dashboard** — a
 multi-panel, 3-D animated view of the simulated mission (true vs. estimated
@@ -126,10 +146,9 @@ drone pose, ToF cones, tracked entities, graph + GAT attention, CBF
 intervention, and a live status readout).
 
 Prerequisites in MATLAB:
+- Trained artifacts generated via `setupSkyGraph` (see section 4).
 - All folders on the path. Running the entry script from its own folder is
   enough, because it adds the whole project via `genpath`.
-- A trained PPO agent (`ppoAgentStage13.mat`) for the Stage-13 model, and the
-  Reinforcement Learning Toolbox.
 
 Run the full dashboard (simulates Stage 13, validates logs, then animates):
 
@@ -148,7 +167,7 @@ Controls during playback: `Space` = pause/resume, `Esc` = stop.
 
 ---
 
-## 5. Running the final evaluation (Stage 15)
+## 6. Running the final evaluation (Stage 15)
 
 The **Stage-15 evaluation harness** sweeps policy mode (waypoint vs. PPO) and
 safety mode (CBF off vs. on) across scenario and fault conditions (40 runs),

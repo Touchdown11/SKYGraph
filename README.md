@@ -37,12 +37,17 @@ docs/           Guides and rendered result figures
    ```matlab
    addpath(genpath(pwd));
    ```
-2. Run the **final visualization** (Stage-14 mission dashboard):
+2. **Generate the trained artifacts once** (GAT weights + PPO agent; these are
+   runtime outputs, gitignored, so they are not in the repo):
+   ```matlab
+   [weightsFile, agentFile] = setupSkyGraph();
+   ```
+3. Run the **final visualization** (Stage-14 mission dashboard):
    ```matlab
    cd scripts
    out = runStage14Visualization();
    ```
-3. Run the **final evaluation** (Stage-15 40-run sweep):
+4. Run the **final evaluation** (Stage-15 40-run sweep):
    ```matlab
    cd scripts
    results = runStage15Experiments("full");

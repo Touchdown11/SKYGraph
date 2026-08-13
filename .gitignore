@@ -26,6 +26,7 @@ resources/project/
 # Runtime outputs (trained agents, logs)
 data/*.mat
 data/*.png
+savedAgentsStage13/
 
 # OS files
 .DS_Store

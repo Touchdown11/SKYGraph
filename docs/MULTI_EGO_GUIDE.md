@@ -10,7 +10,7 @@ Stage 16 adds a **new MATLAB fixed-step multi-ego runner** without changing the 
 - A separate invocation of the existing `cbfSafetyShieldStage11` for every ego at every 0.05-second control update.
 - Simultaneous state updates: no ego can use another ego's future state.
 - Truth-level pairwise surface separation, collision, local graph, CBF, trajectory, and mission logs.
-- A 3-D trajectory/safety plot, CSV summary, MAT output, and validation function.
+- A Stage-14 style fleet dashboard, CSV summary, MAT output, and validation function.
 
 The first release uses the deterministic waypoint controller as the nominal controller, then applies the existing CBF. `PolicyMode` is retained in the configuration/output schema for later multi-agent PPO attachment, but a single-ego PPO artifact must **not** be treated as a trained multi-ego policy. Attach a PPO only after training it against Stage-16 multi-ego encounters.
 
@@ -23,7 +23,7 @@ addpath(genpath(pwd));
 [output, metrics] = runMultiEgoStage16();
 ```
 
-The default run uses two egos on a crossing mission. It writes:
+The default run uses two egos on a crossing mission and opens the **Stage-14 Multi-Ego Mission Dashboard**. It writes:
 
 - `data/stage16_multiego_results.mat`
 - `data/stage16_multiego_summary.csv`
@@ -39,6 +39,8 @@ cfg = configureMultiEgoStage16(struct( ...
     'Visualize', false));
 [out, metrics] = runMultiEgoStage16(cfg);
 report = validateMultiEgoStage16(out);
+% Replay any Stage-16 output in the Stage-14 dashboard:
+runSkyGraphDashboard(out);
 ```
 
 Available scenarios are `"crossing"`, `"headon"`, `"merge"`, and `"dense"`.

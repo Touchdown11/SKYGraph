@@ -68,7 +68,7 @@ the existing single-ego Simulink models. It gives every ego its own local
 SkyGraph and CBF safety projection while using a shared world table:
 
 ```matlab
-[output, metrics] = runMultiEgoStage16();
+[output, metrics] = runMultiEgoStage16();  % opens the Stage-14 fleet dashboard
 ```
 
 See [`docs/MULTI_EGO_GUIDE.md`](docs/MULTI_EGO_GUIDE.md) for scenarios,

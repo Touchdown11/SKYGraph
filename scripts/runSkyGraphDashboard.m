@@ -4,8 +4,8 @@ function [out, report] = runSkyGraphDashboard(out)
 %   runSkyGraphDashboard()      - train any missing artifacts, configure the
 %                                 pipeline, simulate Stage 13, validate the
 %                                 logs, then play the multi-panel dashboard.
-%   runSkyGraphDashboard(out)   - play the dashboard using existing simulation
-%                                 output (e.g. from runStage14Visualization).
+%   runSkyGraphDashboard(out)   - play a single-ego Simulink output or a
+%                                 Stage-16 multi-ego output.
 %
 % This is the simplest way to "just see the dashboard". Playback controls:
 %   Space = pause/resume   Esc = stop.
@@ -16,6 +16,13 @@ function [out, report] = runSkyGraphDashboard(out)
 scriptFolder = fileparts(mfilename('fullpath'));
 projectRoot   = fileparts(scriptFolder);
 addpath(genpath(char(projectRoot)));
+
+if nargin >= 1 && isstruct(out) && isfield(out,'Position') && isfield(out,'Configuration')
+    % Stage 16 output: retain the Stage-14 dashboard experience for a fleet.
+    report = validateMultiEgoStage16(out);
+    animateMultiEgoSkyGraphDashboardStage14(out, 'PlaybackSpeed', 2, 'FrameRate', 20);
+    return;
+end
 
 if nargin < 1 || isempty(out)
     % No simulation output supplied: ensure the trained artifacts exist,

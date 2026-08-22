@@ -61,6 +61,19 @@ docs/           Guides and rendered result figures
 See [`docs/PROJECT_GUIDE.md`](docs/PROJECT_GUIDE.md) for details, the full
 dependency map, the cleanup log, and MATLAB usage notes.
 
+## Multi-ego simulation (Stage 16)
+
+A new decentralized multi-ego MATLAB simulation is available without modifying
+the existing single-ego Simulink models. It gives every ego its own local
+SkyGraph and CBF safety projection while using a shared world table:
+
+```matlab
+[output, metrics] = runMultiEgoStage16();
+```
+
+See [`docs/MULTI_EGO_GUIDE.md`](docs/MULTI_EGO_GUIDE.md) for scenarios,
+configuration, outputs, validation, and the Simulink integration boundary.
+
 ## Requirements
 
 - MATLAB with **Simulink** and the **Reinforcement Learning Toolbox**

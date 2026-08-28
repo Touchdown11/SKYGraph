@@ -22,10 +22,11 @@ src/            MATLAB source, grouped by responsibility
   mapping/      Spatial graph builder (stage 10)
   safety/       CBF safety shield (stage 11)
   ai/           GAT threat inference + PPO policy + safety selector (12/13/15)
+  io/           Real-sensor IoT bridge (JSON parser, ToF replay, source selector)
 models/         quadrotor_stage13_ppo.slx, quadrotor_stage15_evaluation.slx
 visualization/  Stage-14 dashboard + Stage-15 results plotter
-scripts/        run* entry points + GAT/PPO training scripts
-tests/          validateSkyGraphStage14.m
+scripts/        run* entry points + GAT/PPO training + live IoT dashboard
+tests/          validateSkyGraphStage14.m, testSkyGraphJSONParser.m
 evaluation/     extractStage15Metrics.m
 data/           Generated results (.csv / .mat)
 docs/           Guides and rendered result figures
@@ -57,6 +58,27 @@ docs/           Guides and rendered result figures
    cd scripts
    results = runStage15Experiments("full");
    ```
+
+## Live ESP32 ToF bridge (real sensors)
+
+A real-sensor IoT bridge lets you ingest 10 VL53L0X ranges streamed over UDP
+from an ESP32 and visualize / replay them in the pipeline:
+
+```matlab
+cd scripts
+capture = runLiveSkyGraphDashboard(5005);   % live UDP dashboard; Esc to save capture
+
+% Parser sanity check
+testSkyGraphJSONParser
+
+% Turn a saved capture into 20 Hz Simulink-replay timeseries
+replay = prepareRealToFReplay("real_tof_capture_<timestamp>.mat", 0.05);
+```
+
+Bridge files live in `src/io/` (`parseSkyGraphJSON`, `prepareRealToFReplay`,
+`tofSourceSelectorRealVirtual`). The full end-to-end setup and safety guidance
+(wiring, firmware, mux mapping, firewall, replay model wiring) is in
+[`docs/FULL_IOT_TO_VISUALIZATION_GUIDE.md`](docs/FULL_IOT_TO_VISUALIZATION_GUIDE.md).
 
 See [`docs/PROJECT_GUIDE.md`](docs/PROJECT_GUIDE.md) for details, the full
 dependency map, the cleanup log, and MATLAB usage notes.

@@ -208,3 +208,31 @@ Outputs:
 
 A rendered example of the final results is in
 `docs/figures/stage15_final_results.png`.
+
+---
+
+## 7. Real-sensor IoT bridge (live ESP32 ToF)
+
+An optional real-sensor bridge ingests ten VL53L0X ranges streamed over UDP
+from an ESP32 and lets you visualize and replay them:
+
+| File | Location | Purpose |
+|------|----------|---------|
+| `parseSkyGraphJSON.m` | `src/io/` | Parse the documented ESP32 JSON packet into a 10-sensor frame |
+| `tofSourceSelectorRealVirtual.m` | `src/io/` | Select identical real or virtual ToF interface (Simulink codegen) |
+| `prepareRealToFReplay.m` | `src/io/` | Convert an irregular UDP capture into 20 Hz replay timeseries |
+| `runLiveSkyGraphDashboard.m` | `scripts/` | Live UDP dashboard; Esc to save a MAT capture |
+| `testSkyGraphJSONParser.m` | `tests/` | Parser sanity check |
+
+Quick usage:
+
+```matlab
+cd scripts
+capture = runLiveSkyGraphDashboard(5005);   % live dashboard
+testSkyGraphJSONParser                        % parser check
+replay = prepareRealToFReplay("<capture>.mat", 0.05);
+```
+
+The full end-to-end guide (wiring, firmware, multiplexer mapping, firewall,
+replay-model wiring, and safety notes) is in
+[`docs/FULL_IOT_TO_VISUALIZATION_GUIDE.md`](docs/FULL_IOT_TO_VISUALIZATION_GUIDE.md).
